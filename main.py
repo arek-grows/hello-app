@@ -3,9 +3,22 @@ from flask import Flask, request, redirect, url_for, render_template
 app = Flask(__name__)
 
 
+# index
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('index.html', base_url=request.base_url)
+
+
+# static files
+@app.route('/static_files')
+def static_files():
+    return render_template('static_files.html')
+
+
+# login
+@app.route('/login')
+def login():
+    return render_template('login.html', base_url=request.base_url)
 
 
 @app.route('/success/<name>')
@@ -13,8 +26,8 @@ def success(name):
     return 'welcome %s' % name
 
 
-@app.route('/login', methods=['POST', 'GET'])
-def login():
+@app.route('/logged_in', methods=['POST', 'GET'])
+def logged_in():
     if request.method == 'POST':
         user = request.form['nm']
         return redirect(url_for('success', name=user))
@@ -23,16 +36,33 @@ def login():
         return redirect(url_for('success', name=user))
 
 
-# if and for statements
-@app.route('/hello/<int:score>')
-def hello_name(score):
-    return render_template('hello.html', marks=score)
+# if statement
+@app.route('/score', methods=['POST', 'GET'])
+def scores():
+    if request.method == "POST":
+        try:
+            score = int(request.form['score'])
+        except ValueError:
+            score = "error: input was not a number"
+    else:
+        score = "request.method != 'POST'"
+    return render_template('score.html', marks=score)
 
 
-@app.route('/result')
+# sending form data to a template and for statement
+@app.route('/student')
+def student():
+    return render_template('student.html', base_url=request.base_url)
+
+
+@app.route('/student/result', methods=['POST', 'GET'])
 def result():
-    dict = {'Physics': 50, "Chemistry": 60, "Algebra": 70}
-    return render_template('result.html', result=dict)
+    if request.method == 'POST':
+        score_dict = request.form
+    else:
+        score_dict = {'Physics': 50, "Chemistry": 60,
+                      "Algebra": 70}  # can also use a dictionary to return to a template
+    return render_template('result.html', result=score_dict)
 
 
 # temperature converter

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>index</title>
+    </head>
+    <body>
+    <ul>
+        <li><a href="{{base_url}}static_files">static files</a></li>
+        <li><a href="{{base_url}}login">login</a></li>
+            <form action="{{base_url}}score" method="POST">
+        <li>score review (if statements): <input type="text" name="score"> <input type="submit" value="review"></li>
+            </form>
+        <li><a href="{{base_url}}student">score input output into a table (sending form data to a template and for statement)</a></li>
+        <li><a href="{{base_url}}converter">temperature converter</a></li>
+        </ul>
+    </body>
+</html>
